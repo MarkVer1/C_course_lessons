@@ -2,23 +2,27 @@
 #include <stdbool.h>
 #include <math.h>
 
-int input_basis();
+int input_base();
 
 long input_number(int);
 
 long to_decimal(int, long);
 
+long from_decimal_to_base(long, int);
+
 int main(){
-    int base = input_basis();
-    printf("The base is: %d\n", base);
-    long number = input_number(base);
-    printf("The number is: %ld\n", number);
-    long decimal_value = to_decimal(base, number);
-    printf("The decimal number is: %ld\n", decimal_value);
+    printf("Convert a number from base (2-10) to base (2-10)\n");
+    int from_base = input_base();
+    long number = input_number(from_base);
+    printf("Convert to base:\n");
+    int to_base = input_base();
+    long decimal_value = to_decimal(from_base, number);
+    long to_other_base = from_decimal_to_base(decimal_value, to_base);
+    printf("The number in base %d is: %ld\n", to_base, to_other_base);
     return 0;
 }
 
-int input_basis(){
+int input_base(){
     int base;
     do{
         printf("Enter base: ");
@@ -52,4 +56,14 @@ long to_decimal(int base, long number){
         decimal_value += digit * (long)(pow(base, i)); 
     }
     return decimal_value;
+}
+
+long from_decimal_to_base(long number, int base){
+    long base_number = 0;
+    for(int i = 0; number != 0; i++){
+        int reminder = number % base;
+        base_number += reminder * (long)(pow(10, i));
+        number /= base;
+    }
+    return base_number;
 }
